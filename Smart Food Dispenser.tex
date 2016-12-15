@@ -106,7 +106,7 @@ Knowing the facts all ready described on the problem definition, we designed a s
 
 In order to protect the food and in case of the user owning more than one dog, our smart tag for a dog collar, communicates with the dispenser using Radio Frequency IDentification (RFID) technology. This smart tag allows the dispenser to identify the correct dog that has permission to ingest the food. Also, this feature allows the dispenser to protect the food if the dogs is not near the plate when the meal time comes from rodents and other contaminants already mentioned.
 
-The system will include a battery backup system to allow  proper functioning of the dispenser if the energy coming from the energy provider is interrupted. We will have a server that will contain the databases and serve as the middle man between the dispensers and the users mobile applications.
+The system includes a battery backup system to allow  proper functioning of the dispenser if the energy coming from the energy provider is interrupted. We will have a server that will contain the databases and serve as the middle man between the dispensers and the users mobile applications.
 
 \subsection{Contributions}
 
@@ -205,10 +205,30 @@ Fallback transports that Socket.IO includes\cite{Kelleher2014}:
 
 \subsection{RedBear Duo}
 
-The RedBear Duo is a thumb-size development board designed to simplify the process of building Internet of Things (IoT) products. It provides Wi-Fi, BLE and a powerful Cloud backend, all in a compact form factor that makes it ideal for prototyping, a finished product, and everything in between\cite{Labs2016}.
+The RedBear Duo is a thumb-size development board designed to simplify the process of building Internet of Things (IoT) products. It provides Wi-Fi, BLE and a powerful Cloud backend, all in a compact form factor that makes it ideal for prototyping, a finished product, and everything in between\cite{Labs2016}. This microcontroller is cloud ready thanks to a partnership with Particle. A developer can push any changes and data via Cloud right from the start. This is helpful in the development phase and distribution phase because we can update all the microcontrollers at the same time remotely.
 
-This microcontroller is cloud ready thanks to a partnership with Particle. A developer can push any changes and data via Cloud right from the start. This is helpful in the development phase and distribution phase because we can update all the microcontrollers at the same time remotely.
+\begin{figure*}[!htb]
+  \includegraphics[width=\textwidth]{Figures/RedBearDuoCloud.png}
+  \caption{RedBear Duo Flow Diagram}
+  \label{fig:RedBearDuoFlowDiagram}
+\end{figure*}
 
+\subsection{Radio Frequency IDentifiers (RFID)}
+
+Radio or wireless is a way of transmitting energy through empty space—that is, instead of using a wire cable. The energy is carried by invisible waves of electricity and magnetism that vibrate through the air at the speed of light. RFID tags is a technology where a tag returns an ID when its hit by a specified frequency.
+
+Simple RFID tags are described as passive. Instead of containing batteries, they work entirely by responding to the incoming radio waves from the scanner or transmitter. There is just enough energy in those radio waves to activate the RFID chip. Passive tags typically send and receive signals only a few centimeters, but not much more. An alternative form of RFID technology, known as active tags, contain more advanced chips and tiny batteries to power them. They can send and receive signals over much greater distances\cite{Stuff}.\\
+
+Passive RFID tags contain just three components:
+\begin{itemize}
+    \item The antenna—catches incoming radio waves and sends them back out again.
+    \item The chip—generates a unique identifier code for the particular tag.
+    \item The substrate—the backing material (typically paper or plastic) to which the antenna and chip are fixed.
+\end{itemize}
+
+\subsection{AngularJS}
+
+AngularJS is a structural framework for dynamic web apps. It lets you use HTML as your template language and lets you extend HTML's syntax to express your application's components clearly and succinctly\cite{AngularJS2016}. Angular's data binding and dependency injection eliminate much of the code you would otherwise have to write. And it all happens within the browser, making it an ideal partner with any server technology.
 
 
 % ------------------------------------------ System Description ----------------------------------------------
@@ -226,7 +246,7 @@ There are many ways to attack the explained problem. The solution has to tackle 
 
 These problems must be solved with usable and mobile-first as a priority. Having this in mind, there are some characteristics that are very important. Because we are working with dogs, safety is a very important aspect of the project. We must design with safety in mind so that the life of the animal is out of danger. Also, the ease of use, not just for the dog's owner, also for the dog itself is very important. In the decision matrices, from the appendix, we can see how the decisions of the design were taken with this characteristics in mind. From table \ref{tabl:DecLegend}-\ref{tabl:DecDatabase} is shown all the decision matrices for the project.
 
-There are some components that were change due to imporovements that needed to be done on the disign on the dispenser. The most significant change is the microcontroller. Because of how economical it's, the low power consumption and other
+There are some components that were change due to imporovements that needed to be done on the design of the dispenser. The most significant change is the microcontroller. Because of how cost-efective is and the low power consumption.
 
 Like we can see in the decision matrices, we have several categories of components. Here is a summary of the component that we choose according to the tables. Components:
 
@@ -241,6 +261,19 @@ Like we can see in the decision matrices, we have several categories of componen
 \end{itemize}
 
 The decisions were made for all categories. However, we will see in the next subsection how we combine the controller, proximity and connection in just one component thanks to the capabilities of the Raspberry Pi 3.
+
+\subsection{Improvements}
+
+Because we are in Capstone 2, we needed to improve some aspects of our project compared to Capstone 1. The list of improvements are:
+
+\begin{itemize}
+    \item SmartTag based on RFID
+    \item Control Unit Upgrade
+    \item Measuring amount of food
+    \item Battery Backup
+    \item Web Application
+\end{itemize}
+
 
 \subsection{Food Dispenser}
 
@@ -319,9 +352,9 @@ To meet peak values system we need a battery of about 1.2 Amps per hour to keep 
   \label{fig:ServArchitecture}
 \end{figure*}
 
-To be able to connect the dispenser with the mobile application no matter where the user is, we need a server. As we can see in table \ref{tabl:DecServer}, the server is a Node.js server. We selected to develop our server in Node because for its ease of use and support of new technologies like Socket.IO.
+To be able to connect the dispenser with the mobile application no matter where the user is, we need a server. As we can see in table \ref{tabl:DecServer}, the server is a Node.js server. We selected to develop our server in Node because for its ease of use, yet powerful framework. In Node, using the Express framework, we develop an RESTful API. We decided to go with an HTTP API because of how compatible is.
 
-Our server will be our intermediate between a dispenser and a user mobile application. It will have 2 databases. One PostgreSQL database with all the information about dispensers, sensors, feeding schedule, data about food temperature and humidity, and a second one hosted in Microsoft Azure cloud Active Directory for security purposes. Figure \ref{fig:EntityRelationship} shows the entity relationship diagram of the database.
+Our server will be our intermediate between a dispenser and a user mobile application. It will have 2 databases. One PostgreSQL database hosted Amazon Web Services (AWS) with all the information about dispensers, sensors, feeding schedule, data about food temperature and humidity, and a second one hosted in Google Firebase Authentication Cloud for security purposes. Figure \ref{fig:EntityRelationship} shows the entity relationship diagram of the database.
 
 \begin{figure*}[!htb]
   \begin{center}
@@ -342,7 +375,7 @@ Our server will be our intermediate between a dispenser and a user mobile applic
   \label{fig:AppArchitecture}
 \end{figure*}
 
-To complete the general architecture as shown in figure \ref{fig:GeneralArchitecture}, we designed an iOS application for the dog's owner. This application will let the user log in into an account, view all user's dispensers, program schedules, view eating reports and monitor food freshness. The application communicates with the server using Socket.IO. The application is divided in three parts. Figure \ref{fig:AppFlowchart} shows the mobile application flowchart with the three parts indicated.
+To complete the general architecture as shown in figure \ref{fig:GeneralArchitecture}, we designed an iOS application for the dog's owner. This application will let the user log in into an account, view all user's dispensers, program schedules, view eating reports and monitor food freshness. The application communicates with the server using our API. The application is divided in three parts. Figure \ref{fig:AppFlowchart} shows the mobile application flowchart with the three parts indicated. Appendix \ref{App:MobileApplication} shows all the images of the scenes.
 
 \begin{figure*}[!htb]
   \includegraphics[scale=0.6]{Figures/MobileAppScenes}
@@ -350,11 +383,15 @@ To complete the general architecture as shown in figure \ref{fig:GeneralArchitec
   \label{fig:AppFlowchart}
 \end{figure*}
 
-The first one is the Sign Up/Log In scenes. This is where the user need to authenticate before having access to the dispensers configurations and main features. The authentication process will use Microsoft Azure Active Directory\cite{Vilcinskas2016}. This service allows the developer to add a simplified authentication process where you can create a custom account or sign up/ log in with a Facebook account.
+The first one is the Sign Up/Log In scenes. This is where the user need to authenticate before having access to the dispensers configurations and main features. The authentication process will use Google Firebase Authentication Cloud. This service allows the developer to add a simplified authentication process where you can create a custom account or sign up/ log in with a Facebook account.
 
 The next part of the application is the dispensers list. This scenes will allow the user to see all the proper registered dispensers. Additionally to that, the user will have the option to configure a new dispenser. This process will consist of scanning for near dispensers using Bluetooth. After detecting a dispenser, this link will be saved in the server database. During the configuration process, the user will need to configure the  WiFi network of the dispenser. The user will see a list of the available WiFis networks that the dispenser detected, and will have to select one. The user must input the corresponding network password and send it back to the dispenser. After making this configuration, all the communication between the dispenser and the mobile application will be by using the server as the middle man.
 
 The last part of the mobile application consist of the main features. The user will be able to schedule, monitor, and see reports of eating habits of a dog. In the scene of scheduling eating times, the user will need to input from what hour to what hour, the portion size, and if it repeats daily. In the monitor scene, the user will have a table with the data collected from the temperature and humidity sensors. And last, in the report scene the user will see graphics about how the dog is eating and a table with all the collected data from the dispenser.
+
+\subsection{Web Application}
+
+As an improvement, we develop a web application that clones all the features of the mobile application. The reason to develop this technology, is to give options to the customer. The web application will let the user log in into an account, view all user's dispensers, program schedules, view eating reports and monitor food freshness. We used AngularJS 2 as our front end framework. AngularJS 2 let the developer to create single page applications that are fully cross platform with speed and high performace. Appendix \ref{App:WebApplication} shows all the web pages.
 
 
 \section{Conclusions and Future Work}
@@ -377,8 +414,7 @@ Special thanks to Dr. Vergara for supporting this project with his mentorship an
 \newpage
 \begin{appendix}
 
-  \listoffigures
-  \listoftables
+\section{Decision Matrices} \label{App:DecisionMatrices}
 
   \begin{table}[!htb]
     \begin{center}
@@ -430,12 +466,54 @@ Special thanks to Dr. Vergara for supporting this project with his mentorship an
      \label{tabl:DecDatabase}
   \end{table*}
 
+  \newpage
+
+  \section{Mobile Application} \label{App:MobileApplication}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp1.png}
+    \end{center}
+    \caption{Mobile Application Dispensers}
+    \label{fig:iOSApp1}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp2.png}
+    \end{center}
+    \caption{Mobile Application Schedule}
+    \label{fig:iOSApp2}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp3.png}
+    \end{center}
+    \caption{Mobile Application Schedule Confirmation}
+    \label{fig:iOSApp3}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp4.png}
+    \end{center}
+    \caption{Mobile Application Monitoring}
+    \label{fig:iOSApp4}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp5.png}
+    \end{center}
+    \caption{Mobile Application Reports}
+    \label{fig:iOSApp5}
+  \end{figure*}
+
+  \section{Web Application} \label{App:WebApplication}
+
 \end{appendix}
 \newpage
-
-
-
-
 
 % that's all folks
 \end{document}
