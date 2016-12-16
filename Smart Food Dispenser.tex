@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 \usepackage[ruled]{algorithm2e}
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{pbox}
@@ -106,7 +107,7 @@ Knowing the facts all ready described on the problem definition, we designed a s
 
 In order to protect the food and in case of the user owning more than one dog, our smart tag for a dog collar, communicates with the dispenser using Radio Frequency IDentification (RFID) technology. This smart tag allows the dispenser to identify the correct dog that has permission to ingest the food. Also, this feature allows the dispenser to protect the food if the dogs is not near the plate when the meal time comes from rodents and other contaminants already mentioned.
 
-The system will include a battery backup system to allow  proper functioning of the dispenser if the energy coming from the energy provider is interrupted. We will have a server that will contain the databases and serve as the middle man between the dispensers and the users mobile applications.
+The system includes a battery backup system to allow  proper functioning of the dispenser if the energy coming from the energy provider is interrupted. We will have a server that will contain the databases and serve as the middle man between the dispensers and the users mobile applications.
 
 \subsection{Contributions}
 
@@ -205,10 +206,30 @@ Fallback transports that Socket.IO includes\cite{Kelleher2014}:
 
 \subsection{RedBear Duo}
 
-The RedBear Duo is a thumb-size development board designed to simplify the process of building Internet of Things (IoT) products. It provides Wi-Fi, BLE and a powerful Cloud backend, all in a compact form factor that makes it ideal for prototyping, a finished product, and everything in between\cite{Labs2016}.
+The RedBear Duo is a thumb-size development board designed to simplify the process of building Internet of Things (IoT) products. It provides Wi-Fi, BLE and a powerful Cloud backend, all in a compact form factor that makes it ideal for prototyping, a finished product, and everything in between\cite{Labs2016}. This microcontroller is cloud ready thanks to a partnership with Particle. A developer can push any changes and data via Cloud right from the start. This is helpful in the development phase and distribution phase because we can update all the microcontrollers at the same time remotely.
 
-This microcontroller is cloud ready thanks to a partnership with Particle. A developer can push any changes and data via Cloud right from the start. This is helpful in the development phase and distribution phase because we can update all the microcontrollers at the same time remotely.
+\begin{figure*}[!htb]
+  \includegraphics[width=\textwidth]{Figures/RedBearDuoCloud.png}
+  \caption{RedBear Duo Flow Diagram}
+  \label{fig:RedBearDuoFlowDiagram}
+\end{figure*}
 
+\subsection{Radio Frequency IDentifiers (RFID)}
+
+Radio or wireless is a way of transmitting energy through empty space—that is, instead of using a wire cable. The energy is carried by invisible waves of electricity and magnetism that vibrate through the air at the speed of light. RFID tags is a technology where a tag returns an ID when its hit by a specified frequency.
+
+Simple RFID tags are described as passive. Instead of containing batteries, they work entirely by responding to the incoming radio waves from the scanner or transmitter. There is just enough energy in those radio waves to activate the RFID chip. Passive tags typically send and receive signals only a few centimeters, but not much more. An alternative form of RFID technology, known as active tags, contain more advanced chips and tiny batteries to power them. They can send and receive signals over much greater distances\cite{Stuff}.\\
+
+Passive RFID tags contain just three components:
+\begin{itemize}
+    \item The antenna—catches incoming radio waves and sends them back out again.
+    \item The chip—generates a unique identifier code for the particular tag.
+    \item The substrate—the backing material (typically paper or plastic) to which the antenna and chip are fixed.
+\end{itemize}
+
+\subsection{AngularJS}
+
+AngularJS is a structural framework for dynamic web apps. It lets you use HTML as your template language and lets you extend HTML's syntax to express your application's components clearly and succinctly\cite{AngularJS2016}. Angular's data binding and dependency injection eliminate much of the code you would otherwise have to write. And it all happens within the browser, making it an ideal partner with any server technology.
 
 
 % ------------------------------------------ System Description ----------------------------------------------
@@ -226,21 +247,38 @@ There are many ways to attack the explained problem. The solution has to tackle 
 
 These problems must be solved with usable and mobile-first as a priority. Having this in mind, there are some characteristics that are very important. Because we are working with dogs, safety is a very important aspect of the project. We must design with safety in mind so that the life of the animal is out of danger. Also, the ease of use, not just for the dog's owner, also for the dog itself is very important. In the decision matrices, from the appendix, we can see how the decisions of the design were taken with this characteristics in mind. From table \ref{tabl:DecLegend}-\ref{tabl:DecDatabase} is shown all the decision matrices for the project.
 
-There are some components that were change due to imporovements that needed to be done on the disign on the dispenser. The most significant change is the microcontroller. Because of how economical it's, the low power consumption and other
+There are some components that were change due to imporovements that needed to be done on the design of the dispenser. The most significant change is the microcontroller. Because of how cost-efective is and the low power consumption. Keeping in mid the safety of the dog we decided to change the technology used on the proximity sensor (bluetooth low energy), since it requires the emitter and the receiver to be energized, meaning the collar needs a battery. In order to avoid ingestion from the dog with the collar, this technology was change to RFID (Radio-Frequency IDentification).
 
-Like we can see in the decision matrices, we have several categories of components. Here is a summary of the component that we choose according to the tables. Components:
+
+The load cell was also changed to the YZC-133 due to the preciseness of this one. The TAL201 could do reading up to 22.0462 pounds (10 Kg) and have and be really precise on readings over 11.0231 pounds, but it could not be so accurate at low loads. We though in this problem keeping in mind the most common amount of food served to dogs. In other hand, the YZC-133 can read 6.6138 pounds (3 Kg) meaning that on low readings like 0.5 pounds we can have good readings. Another reason for the change of load cell is the supply voltages of both, the TAL201 works from 5 to 10 Volts and the YZC-133 works at 5 V.
+
+Like we can see in the decision matrices, we have several categories of components. Here is a summary of the actual components that we choose according to the tables. Components:
 
 \begin{itemize}
-  \item Controller: Raspberry Pi 3
-  \item Proximity: Bluetooth Low Energy
-  \item Sensors: DHT11
-  \item Load Cell: Straight Bar (TAL220)
-  \item Connection: Wi-Fi Huzzah
+  \item Controller: Red Bear Duo
+  \item Proximity: RFID 125KHz
+  \item Temperature and Humidity Sensors: DHT11
+  \item Distance Sensor: HR SR04
+  \item Load Cell: Straight Bar (YZC-133)
+  \item Connection: Red Bear WiFi Module
   \item Server: Node.js
   \item Database: PostgreSQL
 \end{itemize}
 
-The decisions were made for all categories. However, we will see in the next subsection how we combine the controller, proximity and connection in just one component thanks to the capabilities of the Raspberry Pi 3.
+The decisions were made for all categories. However, we will see in the next subsection how we combine the controller, proximity and connection in just one component thanks to the capabilities of the Red Bear Duo.
+
+\subsection{Improvements}
+
+Because we are in Capstone 2, we needed to improve some aspects of our project compared to Capstone 1. The list of improvements are:
+
+\begin{itemize}
+    \item SmartTag based on RFID
+    \item Control Unit Upgrade
+    \item Measuring amount of food
+    \item Battery Backup
+    \item Web Application
+\end{itemize}
+
 
 \subsection{Food Dispenser}
 
@@ -250,50 +288,58 @@ The decisions were made for all categories. However, we will see in the next sub
   \label{fig:ArchDispenser}
 \end{figure*}
 
-\subsubsection{Controller/Proximity/Connection Unit}
+\subsubsection{Controller/Connection Unit}
 
-The Controller/Processing Unit is the component or that will control every process the may be required. This basically is the brain of the dispenser. In table \ref{tabl:DecController} we can see that the Raspberry Pi 3 won in the decision process.
+The Controller/Processing Unit is the component or that will control every process the may be required. This basically is the brain of the dispenser. In table \ref{tabl:DecController} we can see that the Red Bear Duo won in the decision process.
 
-We choose the Raspberry Pi 3 because of all the features that includes this computer in a small package for its economic price of \$35. We are going to use the built in Wi-Fi and the Bluetooth Low Energy as our Connection and Proximity module respectively. This controlling unit will be in charge of controlling:
+We choose the Red Bear Duo because of all the features that includes this micro-controller in a small package for its economic price of \$25. We are going to use the built in Wi-Fi  as our Connection. This controlling unit will be in charge of controlling:
 
 \begin{itemize}
-  \item Being aware of dog presence using the BLE
+  % \item Being aware of dog presence using the BLE
   \item Read temperature and humidity from both, food bowl and food container
   \item Read how much weight is in both the food bowl and the food container
   \item Connect to the Internet
   \item Send data collected to the server
 \end{itemize}
 
-As for the Proximity Unit, we are using an Estimote\cite{K2014} beacon as the smart name tag that the dispenser will detect by using BLE. If the smart name tag is 1 feet nearby and is time to eat according to the schedule that the owner programed, the dispenser will open the bowl of food. As soon as the dog is not nearby or the time of eating is due, the bowl will close the bowl of food. The smart name tag beacon has an approximately battery life of one year. The battery life status is displayed to the user in the mobile application. The battery is not interchangeable meaning that each year, the owner would need to buy a new smart name tag. The name tag cost only \$10.
+The Connection Unit of our system is solved using the built in WiFi module that the Red Bear Duo has. We are going to use this module to connect to the server via Internet using our own rest http API.
 
-The Connection Unit of our system is solved using the built in WiFi module that the Raspberry Pi 3 has. We are going to use this module to connect to the server via Internet using Socket.io.
+\section{Proximity} % (fold)
+\label{sec:proximity}
+
+As for the Proximity Unit, we are using an RFID tag\cite{K2014} as the smart name tag that the dispenser will detect by using an RFID module. If the smart name tag is 1.37 inches nearby and is time to eat, according to the schedule that the owner programed, the dispenser will open the bowl of food. As soon as the dog is not nearby or the time of eating is due, the bowl will close the bowl of food. The smart name tag has an technically infinite life time since it is a passive element and does not need any power source to work.
+
+The RFI module works at 125KHz and it sends a radio frequency signal to the tag and the tag bounces back the signal containing the ID of the tag. The work distance is currently really near to the module due that this design is focus on the proof of concept. On the future we plan to change this technology or improve the performance of it.
+
+% section proximity (end)
 
 
 \subsubsection{Sensors}
 
 The design includes three types of sensors to measure important characteristics of the food. We included temperature and humidity sensors to measure food freshness and a weight sensor to know how much food is left on both the food bowl and food container.
 
-For the temperature and humidity sensor, as table \ref{tabl:DecSensors} shows, we selected the DHT11 sensor. The DHT11 sensor includes both temperature and humidity sensor in a single body. Also, the output of the module is digital. This is perfect as the Raspberry Pi 3 do not include any analog input.
+For the temperature and humidity sensor, as table \ref{tabl:DecSensors} shows, we selected the DHT11 sensor. The DHT11 sensor includes both temperature and humidity sensor in a single body. Also, the output of the module is digital. This is perfect as the Red Bear Duo do not include any analog input.
 
 The system should report how the dog is eating referring to his habits. This is possibly in our design thanks to the weight sensor. The dispenser will measure how much food is left in the bowl. With the collected data, the system should report to the user mobile application if the dog did eat or not. Using this information, we can generate weekly reports about the eating habits of the animal. This way, the dog's owner can know how his/her dog is eating and can monitor the dog's health.
 
+In this design we included one more sensor, the HC SR04. This sensor will is used to measure the amount of food inside the canister by reading the distance between the food and the sensor. In this manner we can create alarms based on food amount status.
 
 \subsubsection{Battery Backup}
 
-To calculate the system power consumption we used the Raspberry Pi 3 and DC Motors peak Voltages and Currents. This way we can know the how much energy we need to supply to the system in the case it needs it. Also, this is helpful information to select the best miliAmps per Hour battery for the Battery backup that the system will have.
+To calculate the system power consumption we used the Red Bear Duo and DC Motors peak Voltages and Currents. This way we can know the how much energy we need to supply to the system in the case it needs it. Also, this is helpful information to select the best miliAmps per Hour battery for the Battery backup that the system will have.
 
-The sensors power will be provided from the Raspberry Pi and this values are assumed by the energy consumed from it. The Raspberry Pi peak voltage and amperage are 5.2V and 2.5A, making it to dispel \(P = IV\) around 13 Watts of electric energy. The same way, the DC motors selected for this project works with a peak voltage and current of 6V and 1.7 Amps with load, meaning a that booth will consume 20.4 Watts on their peaks values.
+The sensors power will be provided from the Red Bear and this values are assumed by the energy consumed from it. The Red Bear peak voltage and amperage are 3.3V and 1A, making it to dispel \(P = IV\) around 3.3 Watts of electric energy. The same way, the DC motors selected for this project works with a peak voltage and current of 6V and 1.7 Amps with load, meaning a that booth will consume 20.4 Watts on their peaks values.
 
-Knowing that additive in any configuration of resistive circuit, the total peak power of the circuit is approximately 34 Watts. The system works with 6V and the for calculate the current that the circuits needs for its peak values the same formula of power\cite{AllAboutCircuits} has been used as follows:
+Knowing that additive in any configuration of resistive circuit, the total peak power of the circuit is approximately 11 Watts. The system works with 6V and the for calculate the current that the circuits needs for its peak values the same formula of power\cite{AllAboutCircuits} has been used as follows:
 
 \begin{itemize}
   \item \(P = IV\)
   \item \(I = P/V\)
-  \item \(I = 34W/6V\)
-  \item \(I = 5.667A\)
+  \item \(I = 11W/6V\)
+  \item \(I = 1.83A\)
 \end{itemize}
 
-From doing some research for choosing the correct battery for backup, the type selected is a Li-Ion one for various reasons. Then . Some of them are:
+From doing some research for choosing the correct battery for backup, the type selected is a Li-Ion one for various reasons. Some of them are:
 
 \begin{enumerate}
   \item Usable Capacity
@@ -310,6 +356,27 @@ From doing some research for choosing the correct battery for backup, the type s
 
 To meet peak values system we need a battery of about 1.2 Amps per hour to keep the circuit in operation for two hours at peak values. these values can be improved by working more efficiently the circuit is to be implemented.
 
+The battery selected is the Tenergy Li-Ion 18650 Rechargeable Battery Pack w/ ca=harge controller PCB. The technical specs of the battery are
+
+\begin{itemize}
+  \item Type: Pack
+  \item Chemistry: Li-ion
+  \item Nominal Voltage (V): 7.4
+  \item Capacity (mAh): 4400
+  \item Max Continuous Discharge Current: 5.0A
+  \item Battery Charging Current:
+  \begin{itemize}
+    \item Standard: 0.9A
+    \item Rapid: 2A
+  \end{itemize}
+  \item PCB/Pack Protection:
+  \begin{itemize}
+    \item Overcharge Protection: $>$ 8.4V
+    \item Over-discharge Protection: $<$ 6.0V
+    \item For Detailed PCB Info: (click here)
+    \item Over Current Cutoff (A): 11 $\pm$ 3A
+  \end{itemize}
+\end{itemize}
 
 \subsection{Server}
 
@@ -319,9 +386,9 @@ To meet peak values system we need a battery of about 1.2 Amps per hour to keep 
   \label{fig:ServArchitecture}
 \end{figure*}
 
-To be able to connect the dispenser with the mobile application no matter where the user is, we need a server. As we can see in table \ref{tabl:DecServer}, the server is a Node.js server. We selected to develop our server in Node because for its ease of use and support of new technologies like Socket.IO.
+To be able to connect the dispenser with the mobile application no matter where the user is, we need a server. As we can see in table \ref{tabl:DecServer}, the server is a Node.js server. We selected to develop our server in Node because for its ease of use, yet powerful framework. In Node, using the Express framework, we develop an RESTful API. We decided to go with an HTTP API because of how compatible is.
 
-Our server will be our intermediate between a dispenser and a user mobile application. It will have 2 databases. One PostgreSQL database with all the information about dispensers, sensors, feeding schedule, data about food temperature and humidity, and a second one hosted in Microsoft Azure cloud Active Directory for security purposes. Figure \ref{fig:EntityRelationship} shows the entity relationship diagram of the database.
+Our server will be our intermediate between a dispenser and a user mobile application. It will have 2 databases. One PostgreSQL database hosted Amazon Web Services (AWS) with all the information about dispensers, sensors, feeding schedule, data about food temperature and humidity, and a second one hosted in Google Firebase Authentication Cloud for security purposes. Figure \ref{fig:EntityRelationship} shows the entity relationship diagram of the database.
 
 \begin{figure*}[!htb]
   \begin{center}
@@ -342,7 +409,7 @@ Our server will be our intermediate between a dispenser and a user mobile applic
   \label{fig:AppArchitecture}
 \end{figure*}
 
-To complete the general architecture as shown in figure \ref{fig:GeneralArchitecture}, we designed an iOS application for the dog's owner. This application will let the user log in into an account, view all user's dispensers, program schedules, view eating reports and monitor food freshness. The application communicates with the server using Socket.IO. The application is divided in three parts. Figure \ref{fig:AppFlowchart} shows the mobile application flowchart with the three parts indicated.
+To complete the general architecture as shown in figure \ref{fig:GeneralArchitecture}, we designed an iOS application for the dog's owner. This application will let the user log in into an account, view all user's dispensers, program schedules, view eating reports and monitor food freshness. The application communicates with the server using our API. The application is divided in three parts. Figure \ref{fig:AppFlowchart} shows the mobile application flowchart with the three parts indicated. Appendix \ref{App:MobileApplication} shows all the images of the scenes.
 
 \begin{figure*}[!htb]
   \includegraphics[scale=0.6]{Figures/MobileAppScenes}
@@ -350,18 +417,31 @@ To complete the general architecture as shown in figure \ref{fig:GeneralArchitec
   \label{fig:AppFlowchart}
 \end{figure*}
 
-The first one is the Sign Up/Log In scenes. This is where the user need to authenticate before having access to the dispensers configurations and main features. The authentication process will use Microsoft Azure Active Directory\cite{Vilcinskas2016}. This service allows the developer to add a simplified authentication process where you can create a custom account or sign up/ log in with a Facebook account.
+The first one is the Sign Up/Log In scenes. This is where the user need to authenticate before having access to the dispensers configurations and main features. The authentication process will use Google Firebase Authentication Cloud. This service allows the developer to add a simplified authentication process where you can create a custom account or sign up/ log in with a Facebook account.
 
 The next part of the application is the dispensers list. This scenes will allow the user to see all the proper registered dispensers. Additionally to that, the user will have the option to configure a new dispenser. This process will consist of scanning for near dispensers using Bluetooth. After detecting a dispenser, this link will be saved in the server database. During the configuration process, the user will need to configure the  WiFi network of the dispenser. The user will see a list of the available WiFis networks that the dispenser detected, and will have to select one. The user must input the corresponding network password and send it back to the dispenser. After making this configuration, all the communication between the dispenser and the mobile application will be by using the server as the middle man.
 
 The last part of the mobile application consist of the main features. The user will be able to schedule, monitor, and see reports of eating habits of a dog. In the scene of scheduling eating times, the user will need to input from what hour to what hour, the portion size, and if it repeats daily. In the monitor scene, the user will have a table with the data collected from the temperature and humidity sensors. And last, in the report scene the user will see graphics about how the dog is eating and a table with all the collected data from the dispenser.
 
+\subsection{Web Application}
+
+As an improvement, we develop a web application that clones all the features of the mobile application. The reason to develop this technology, is to give options to the customer. The web application will let the user log in into an account, view all user's dispensers, program schedules, view eating reports and monitor food freshness. We used AngularJS 2 as our front end framework. AngularJS 2 let the developer to create single page applications that are fully cross platform with speed and high performace. Appendix \ref{App:WebApplication} shows all the web pages.
+
 
 \section{Conclusions and Future Work}
 
-This report proposes a system that solve some of the main problems that dog owners have when feeding their pets. The system uses a Raspberry Pi 3 as the brain of the dispenser and protects the food when a smart name tag is not nearby. This smart name tag uses the beacon technology using BLE. Also, the dispenser monitor and reports to the user food freshness and dog's eating habits. All this is reported and programmed by using a mobile application. Our system is in the early stages of development. We were able to program the dispenser to detect the smart name tag. Also, temperature and humidity data is sent to the server using Socket.IO. In order to complete the design, we need to work the aesthetics of the dispenser and how the mechanical aspects of the dispenser should work.
+This report presents a system that solve some of the main problems that dog owners have when feeding their pets. The system uses a Red Bear Duo as the brain of the dispenser and protects the food when a smart name tag is not nearby. This smart name tag uses RFID technology as proximity detection . Also, the dispenser monitor and reports to the user food freshness and dog's eating habits. All this is reported and programmed by using a mobile application. Our system is in the proof of concept stage of development. We were able to:
 
-For future work, we need to implement the proposed design, consider water integration in the dispenser, and research more if RFID is a more suitable technology for the smart name tag. For this design we choose BLE because of all the advantages it has over RFID but we need to consult more the safety aspect of the battery in a dog's collar with a veterinary or an expert in a related area. Also, we should consider if a single dispenser can be used with several dogs.
+\begin{itemize}
+  \item Program the hour of eat, period of time and food portion.
+  \item Serve the programmed food portion the the time programmed
+  \item Detect the dog and make the food available if the dog is near
+  \item Monitor the food temperature, humidity and quantity in the plate and canister
+\end{itemize}
+
+In order to complete the design, we need to work the aesthetics of the dispenser and how the mechanical aspects of the dispenser should work.
+
+For future work, we need to implement the proposed design, consider water integration in the dispenser, and research more if RFID is a more suitable technology for the smart name tag. Also, we should consider if a single dispenser can be used with several dogs.
 
 The most remarkable contribution of this design is the huge capability of protecting the food by retracting the plate inside the dispenser. Is important to mention that the interest on designing this solution came from people having the problems described in the problem definition. We are contributing and simplifying peoples live by empowering them to have control over his/her dog's eating habits.
 
@@ -377,8 +457,7 @@ Special thanks to Dr. Vergara for supporting this project with his mentorship an
 \newpage
 \begin{appendix}
 
-  \listoffigures
-  \listoftables
+\section{Decision Matrices} \label{App:DecisionMatrices}
 
   \begin{table}[!htb]
     \begin{center}
@@ -430,12 +509,54 @@ Special thanks to Dr. Vergara for supporting this project with his mentorship an
      \label{tabl:DecDatabase}
   \end{table*}
 
+  \newpage
+
+  \section{Mobile Application} \label{App:MobileApplication}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp1.png}
+    \end{center}
+    \caption{Mobile Application Dispensers}
+    \label{fig:iOSApp1}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp2.png}
+    \end{center}
+    \caption{Mobile Application Schedule}
+    \label{fig:iOSApp2}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp3.png}
+    \end{center}
+    \caption{Mobile Application Schedule Confirmation}
+    \label{fig:iOSApp3}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp4.png}
+    \end{center}
+    \caption{Mobile Application Monitoring}
+    \label{fig:iOSApp4}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/iOSApp5.png}
+    \end{center}
+    \caption{Mobile Application Reports}
+    \label{fig:iOSApp5}
+  \end{figure*}
+
+  \section{Web Application} \label{App:WebApplication}
+
 \end{appendix}
 \newpage
-
-
-
-
 
 % that's all folks
 \end{document}
