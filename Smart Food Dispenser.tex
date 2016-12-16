@@ -103,7 +103,7 @@ For example, a puppy’s meal schedule must include three measured meals a day, 
   \label{fig:GeneralArchitecture}
 \end{figure}
 
-Knowing the facts all ready described on the problem definition, we designed a smart food dispenser for dogs capable of being programmed using an mobile application and a web application. Figure \ref{fig:GeneralArchitecture} shows the general architecture of the system. The user uses a mobile or web application to set the dog feeding hours and the time period that the dog will have access to the food if and only if the proximity sensor detects the name tag that the dog wears. After the period conclude, the dispenser will report the amount of food left by the dog if any, and the status of it (temperature and humidity) for quality control.
+Knowing the facts already described on the problem definition, we designed a smart food dispenser for dogs capable of being programmed using an mobile application and a web application. Figure \ref{fig:GeneralArchitecture} shows the general architecture of the system. The user uses a mobile or web application to set the dog feeding hours and the time period that the dog will have access to the food if and only if the proximity sensor detects the name tag that the dog wears. After the period conclude, the dispenser will report the amount of food left by the dog if any, and the status of it (temperature and humidity) for quality control.
 
 In order to protect the food and in case of the user owning more than one dog, our smart tag for a dog collar, communicates with the dispenser using Radio Frequency IDentification (RFID) technology. This smart tag allows the dispenser to identify the correct dog that has permission to ingest the food. Also, this feature allows the dispenser to protect the food if the dogs is not near the plate when the meal time comes from rodents and other contaminants already mentioned.
 
@@ -245,9 +245,9 @@ There are many ways to attack the explained problem. The solution has to tackle 
   \item Aware of dog presence
 \end{itemize}
 
-These problems must be solved with usable and mobile-first as a priority. Having this in mind, there are some characteristics that are very important. Because we are working with dogs, safety is a very important aspect of the project. We must design with safety in mind so that the life of the animal is out of danger. Also, the ease of use, not just for the dog's owner, also for the dog itself is very important. In the decision matrices, from the appendix, we can see how the decisions of the design were taken with this characteristics in mind. From table \ref{tabl:DecLegend}-\ref{tabl:DecDatabase} is shown all the decision matrices for the project.
+These problems must be solved with usable and mobile-first as a priority. Having this in mind, there are some characteristics that are very important. Because we are working with dogs, safety is a very important aspect of the project. We must design with safety in mind so that the life of the animal is out of danger. Also, the ease of use, not just for the dog's owner, also for the dog itself is very important. In the decision matrices from appendix \ref{App:DecisionMatrices}, we can see how the decisions of the design were taken with this characteristics in mind. From table \ref{tabl:DecLegend}-\ref{tabl:DecDatabase} is shown all the decision matrices for the project.
 
-There are some components that were change due to imporovements that needed to be done on the design of the dispenser. The most significant change is the microcontroller. Because of how cost-efective is and the low power consumption. Keeping in mid the safety of the dog we decided to change the technology used on the proximity sensor (bluetooth low energy), since it requires the emitter and the receiver to be energized, meaning the collar needs a battery. In order to avoid ingestion from the dog with the collar, this technology was change to RFID (Radio-Frequency IDentification).
+There are some components that were change due to imporovements that needed to be done on the design of the dispenser. The most significant change is the microcontroller. Because of how cost-efective is and the low power consumption is the RedBear Duo compared to an Raspberry Pi 3. Keeping in mind the safety of the dog we decided to change the technology used on the proximity sensor (bluetooth low energy), since it requires the emitter and the receiver to be energized, meaning the collar needs a battery. In order to avoid ingestion from the dog with the collar, this technology was change to RFID (Radio-Frequency IDentification).
 
 
 The load cell was also changed to the YZC-133 due to the preciseness of this one. The TAL201 could do reading up to 22.0462 pounds (10 Kg) and have and be really precise on readings over 11.0231 pounds, but it could not be so accurate at low loads. We though in this problem keeping in mind the most common amount of food served to dogs. In other hand, the YZC-133 can read 6.6138 pounds (3 Kg) meaning that on low readings like 0.5 pounds we can have good readings. Another reason for the change of load cell is the supply voltages of both, the TAL201 works from 5 to 10 Volts and the YZC-133 works at 5 V.
@@ -255,17 +255,17 @@ The load cell was also changed to the YZC-133 due to the preciseness of this one
 Like we can see in the decision matrices, we have several categories of components. Here is a summary of the actual components that we choose according to the tables. Components:
 
 \begin{itemize}
-  \item Controller: Red Bear Duo
+  \item Controller: RedBear Duo
   \item Proximity: RFID 125KHz
   \item Temperature and Humidity Sensors: DHT11
   \item Distance Sensor: HR SR04
   \item Load Cell: Straight Bar (YZC-133)
-  \item Connection: Red Bear WiFi Module
+  \item Connection: RedBear WiFi Module
   \item Server: Node.js
   \item Database: PostgreSQL
 \end{itemize}
 
-The decisions were made for all categories. However, we will see in the next subsection how we combine the controller, proximity and connection in just one component thanks to the capabilities of the Red Bear Duo.
+The decisions were made for all categories. However, we will see in the next subsection how we combine the controller, proximity and connection in just one component thanks to the capabilities of the RedBear Duo.
 
 \subsection{Improvements}
 
@@ -290,9 +290,7 @@ Because we are in Capstone 2, we needed to improve some aspects of our project c
 
 \subsubsection{Controller/Connection Unit}
 
-The Controller/Processing Unit is the component or that will control every process the may be required. This basically is the brain of the dispenser. In table \ref{tabl:DecController} we can see that the Red Bear Duo won in the decision process.
-
-We choose the Red Bear Duo because of all the features that includes this micro-controller in a small package for its economic price of \$25. We are going to use the built in Wi-Fi  as our Connection. This controlling unit will be in charge of controlling:
+The Controller/Processing Unit is the component or that will control every process the may be required. This basically is the brain of the dispenser. We choose the RedBear Duo because of all the features that includes this micro-controller in a small package for its economic price of \$25. We are going to use the built in Wi-Fi  as our Connection. This controlling unit will be in charge of controlling:
 
 \begin{itemize}
   % \item Being aware of dog presence using the BLE
@@ -302,12 +300,12 @@ We choose the Red Bear Duo because of all the features that includes this micro-
   \item Send data collected to the server
 \end{itemize}
 
-The Connection Unit of our system is solved using the built in WiFi module that the Red Bear Duo has. We are going to use this module to connect to the server via Internet using our own rest http API.
+The Connection Unit of our system is solved using the built in WiFi module that the RedBear Duo has. We are going to use this module to connect to the server via Internet using our own rest http API.
 
-\section{Proximity} % (fold)
+\subsubsection{Proximity}
 \label{sec:proximity}
 
-As for the Proximity Unit, we are using an RFID tag\cite{K2014} as the smart name tag that the dispenser will detect by using an RFID module. If the smart name tag is 1.37 inches nearby and is time to eat, according to the schedule that the owner programed, the dispenser will open the bowl of food. As soon as the dog is not nearby or the time of eating is due, the bowl will close the bowl of food. The smart name tag has an technically infinite life time since it is a passive element and does not need any power source to work.
+As for the Proximity Unit, we are using an RFID tag\cite{Stuff} as the smart name tag that the dispenser will detect by using an RFID module. If the smart name tag is 1.37 inches nearby and is time to eat, according to the schedule that the owner programed, the dispenser will open the bowl of food. As soon as the dog is not nearby or the time of eating is due, the bowl will close the bowl of food. The smart name tag has an technically infinite life time since it is a passive element and does not need any power source to work.
 
 The RFI module works at 125KHz and it sends a radio frequency signal to the tag and the tag bounces back the signal containing the ID of the tag. The work distance is currently really near to the module due that this design is focus on the proof of concept. On the future we plan to change this technology or improve the performance of it.
 
@@ -318,7 +316,7 @@ The RFI module works at 125KHz and it sends a radio frequency signal to the tag 
 
 The design includes three types of sensors to measure important characteristics of the food. We included temperature and humidity sensors to measure food freshness and a weight sensor to know how much food is left on both the food bowl and food container.
 
-For the temperature and humidity sensor, as table \ref{tabl:DecSensors} shows, we selected the DHT11 sensor. The DHT11 sensor includes both temperature and humidity sensor in a single body. Also, the output of the module is digital. This is perfect as the Red Bear Duo do not include any analog input.
+For the temperature and humidity sensor, as table \ref{tabl:DecSensors} shows, we selected the DHT11 sensor. The DHT11 sensor includes both temperature and humidity sensor in a single body. Also, the output of the module is digital. This is perfect as the RedBear Duo do not include any analog input.
 
 The system should report how the dog is eating referring to his habits. This is possibly in our design thanks to the weight sensor. The dispenser will measure how much food is left in the bowl. With the collected data, the system should report to the user mobile application if the dog did eat or not. Using this information, we can generate weekly reports about the eating habits of the animal. This way, the dog's owner can know how his/her dog is eating and can monitor the dog's health.
 
@@ -326,9 +324,9 @@ In this design we included one more sensor, the HC SR04. This sensor will is use
 
 \subsubsection{Battery Backup}
 
-To calculate the system power consumption we used the Red Bear Duo and DC Motors peak Voltages and Currents. This way we can know the how much energy we need to supply to the system in the case it needs it. Also, this is helpful information to select the best miliAmps per Hour battery for the Battery backup that the system will have.
+To calculate the system power consumption we used the RedBear Duo and DC Motors peak Voltages and Currents. This way we can know the how much energy we need to supply to the system in the case it needs it. Also, this is helpful information to select the best miliAmps per Hour battery for the Battery backup that the system will have.
 
-The sensors power will be provided from the Red Bear and this values are assumed by the energy consumed from it. The Red Bear peak voltage and amperage are 3.3V and 1A, making it to dispel \(P = IV\) around 3.3 Watts of electric energy. The same way, the DC motors selected for this project works with a peak voltage and current of 6V and 1.7 Amps with load, meaning a that booth will consume 20.4 Watts on their peaks values.
+The sensors power will be provided from the RedBear and this values are assumed by the energy consumed from it. The RedBear peak voltage and amperage are 3.3V and 1A, making it to dispel \(P = IV\) around 3.3 Watts of electric energy. The same way, the DC motors selected for this project works with a peak voltage and current of 6V and 1.7 Amps with load, meaning a that booth will consume 20.4 Watts on their peaks values.
 
 Knowing that additive in any configuration of resistive circuit, the total peak power of the circuit is approximately 11 Watts. The system works with 6V and the for calculate the current that the circuits needs for its peak values the same formula of power\cite{AllAboutCircuits} has been used as follows:
 
@@ -377,6 +375,14 @@ The battery selected is the Tenergy Li-Ion 18650 Rechargeable Battery Pack w/ ca
     \item Over Current Cutoff (A): 11 $\pm$ 3A
   \end{itemize}
 \end{itemize}
+
+\begin{figure*}[!htb]
+  \begin{center}
+      \includegraphics[scale=0.4]{Figures/DispenserFlowchart.png}
+  \end{center}
+  \caption{Dispenser Flowchart}
+  \label{fig:DispenserFlowChart}
+\end{figure*}
 
 \subsection{Server}
 
@@ -430,7 +436,7 @@ As an improvement, we develop a web application that clones all the features of 
 
 \section{Conclusions and Future Work}
 
-This report presents a system that solve some of the main problems that dog owners have when feeding their pets. The system uses a Red Bear Duo as the brain of the dispenser and protects the food when a smart name tag is not nearby. This smart name tag uses RFID technology as proximity detection . Also, the dispenser monitor and reports to the user food freshness and dog's eating habits. All this is reported and programmed by using a mobile application. Our system is in the proof of concept stage of development. We were able to:
+This report presents a system that solve some of the main problems that dog owners have when feeding their pets. The system uses a RedBear Duo as the brain of the dispenser and protects the food when a smart name tag is not nearby. This smart name tag uses RFID technology as proximity detection. Also, the dispenser monitor and reports to the user food freshness and dog's eating habits. All this is reported and programmed by using a mobile application. Our system is in the proof of concept stage of development. We were able to:
 
 \begin{itemize}
   \item Program the hour of eat, period of time and food portion.
@@ -439,9 +445,9 @@ This report presents a system that solve some of the main problems that dog owne
   \item Monitor the food temperature, humidity and quantity in the plate and canister
 \end{itemize}
 
-In order to complete the design, we need to work the aesthetics of the dispenser and how the mechanical aspects of the dispenser should work.
+In order to complete the design, we need to work the asthetics of the dispenser and how the mechanical aspects of the dispenser should work.
 
-For future work, we need to implement the proposed design, consider water integration in the dispenser, and research more if RFID is a more suitable technology for the smart name tag. Also, we should consider if a single dispenser can be used with several dogs.
+For future work, we need to implement the proposed design, consider water integration in the dispenser, and research more if RFID is a suitable technology for the smart name tag. Also, we should consider if a single dispenser can be used with several dogs.
 
 The most remarkable contribution of this design is the huge capability of protecting the food by retracting the plate inside the dispenser. Is important to mention that the interest on designing this solution came from people having the problems described in the problem definition. We are contributing and simplifying peoples live by empowering them to have control over his/her dog's eating habits.
 
@@ -554,6 +560,46 @@ Special thanks to Dr. Vergara for supporting this project with his mentorship an
   \end{figure*}
 
   \section{Web Application} \label{App:WebApplication}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/WebApp1.png}
+    \end{center}
+    \caption{Web Application Log In}
+    \label{fig:WebApp1}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/WebApp2.png}
+    \end{center}
+    \caption{Web Application Dispensers}
+    \label{fig:WebApp2}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/WebApp3.png}
+    \end{center}
+    \caption{Web Application Schedule Schedule}
+    \label{fig:WebApp3}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/WebApp4.png}
+    \end{center}
+    \caption{Web Application Monitoring}
+    \label{fig:WebApp4}
+  \end{figure*}
+
+  \begin{figure*}[!htb]
+    \begin{center}
+        \includegraphics[scale=0.15]{Figures/WebApp5.png}
+    \end{center}
+    \caption{Web Application Reports}
+    \label{fig:WebApp5}
+  \end{figure*}
 
 \end{appendix}
 \newpage
